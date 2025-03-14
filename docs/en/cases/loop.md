@@ -62,7 +62,7 @@ The above implementation leverages the official API, but you can also implement 
 >
 > > You can copy the following code and paste it into the console of the online [**demo**](https://imtaotao.github.io/danmu/) to see the effect.
 
-```ts {7,11,15}
+```ts {7,11,15-16}
 let loops = 0;
 
 manager.push('content', {
@@ -77,8 +77,9 @@ manager.push('content', {
 
       // If you have limits on memory and view, it may cause the send to fail
       // You can call `manager.canPush('facile')` to check
+      danmaku.loops = 0;
       manager.unshift(danmaku);
     },
   },
-}),
+});
 ```

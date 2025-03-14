@@ -62,7 +62,7 @@ manager.push('弹幕内容', {
 >
 > > 你可以复制下面这段代码，然后粘贴在在线 [**demo**](https://imtaotao.github.io/danmu/) 的控制台上查看效果。
 
-```ts {7,11,15}
+```ts {7,11,15-16}
 let loops = 0;
 
 manager.push('弹幕内容', {
@@ -77,8 +77,9 @@ manager.push('弹幕内容', {
 
       // 如果你有对内存和视图做限，可能会导致发送失败
       // 你可以调用 manager.canPush('facile') 来判断
+      danmaku.loops = 0;
       manager.unshift(danmaku);
     },
   },
-}),
+});
 ```
