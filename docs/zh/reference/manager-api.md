@@ -207,9 +207,18 @@ manager.unmount();
 
 ## `manager.clear()`
 
-**类型：`() => void`**
+**类型：`(type?: 'facile' | 'flexible' | null) => void`**
 
-清空当前渲染和内存中的弹幕，会触发 `clear` 钩子。
+清空当前渲染和内存中的弹幕，会触发 `clear` 钩子，默认会清除所有的弹幕，包括高级弹幕。
+
+```ts
+// 清除所有弹幕
+manager.clear();
+// 清除普通弹幕
+manager.clear('facile');
+// 清除高级弹幕
+manager.clear('flexible');
+```
 
 ## `manager.updateOptions()`
 

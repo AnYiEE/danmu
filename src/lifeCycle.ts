@@ -1,3 +1,4 @@
+import type { Nullable } from 'aidly';
 import {
   SyncHook,
   AsyncHook,
@@ -50,10 +51,10 @@ export function createManagerLifeCycle<T>() {
     stop: new SyncHook<[]>(),
     show: new SyncHook<[]>(),
     hide: new SyncHook<[]>(),
-    clear: new SyncHook<[]>(),
     freeze: new SyncHook<[]>(),
     unfreeze: new SyncHook<[]>(),
     finished: new SyncHook<[]>(),
+    clear: new SyncHook<[Nullable<DanmakuType>]>(),
     mount: new SyncHook<[HTMLElement]>(),
     unmount: new SyncHook<[HTMLElement | null]>(),
     init: new SyncHook<[manager: Manager<T>]>(),

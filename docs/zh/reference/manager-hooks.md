@@ -99,9 +99,9 @@ const manager = create({
 
 ## `hooks.clear`
 
-**类型：`SyncHook`**
+**类型：`SyncHook<['facile' | 'flexible' | null | undefined]>`**
 
-`clear` 钩子会在清空当前渲染和内存中的弹幕和弹幕数据的时候触发，调用 `manager.clear()` 的时候才会触发。
+`clear` 钩子会在清空当前渲染和内存中的弹幕和弹幕数据的时候触发，调用 `manager.clear()` 的时候。
 
 ## `hooks.mount`
 

@@ -99,7 +99,7 @@ The `hide` hook is triggered when danmaku are batch hidden. It is only triggered
 
 ## `hooks.clear`
 
-**Type: `SyncHook`**
+**Type: `SyncHook<['facile' | 'flexible' | null | undefined]>`**
 
 The `clear` hook is triggered when clearing the currently rendered danmaku and danmaku data from memory. It is only triggered when calling `manager.clear()`.
 

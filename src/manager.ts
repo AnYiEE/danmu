@@ -1,4 +1,4 @@
-import { assert, hasOwn, random, isEmptyObject } from 'aidly';
+import { assert, hasOwn, random, isEmptyObject, type Nullable } from 'aidly';
 import { Engine } from './engine';
 import { FacileDanmaku } from './danmaku/facile';
 import { FlexibleDanmaku } from './danmaku/flexible';
@@ -176,7 +176,7 @@ export class Manager<
         parentNode = res as HTMLElement;
       }
       if (this.isPlaying()) {
-        clear && this.clear(INTERNAL_FLAG);
+        clear && this.clear(null, INTERNAL_FLAG);
       }
       this._engine.container._mount(parentNode);
       this.format();
@@ -190,10 +190,10 @@ export class Manager<
     this.pluginSystem.lifecycle.unmount.emit(parentNode);
   }
 
-  public clear(_flag?: Symbol) {
-    this._engine.clear();
+  public clear(type?: Nullable<DanmakuType>, _flag?: Symbol) {
+    this._engine.clear(type);
     if (_flag !== INTERNAL_FLAG) {
-      this.pluginSystem.lifecycle.clear.emit();
+      this.pluginSystem.lifecycle.clear.emit(type);
     }
   }
 

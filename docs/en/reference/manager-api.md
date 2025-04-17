@@ -207,9 +207,18 @@ manager.unmount();
 
 ## `manager.clear()`
 
-**Type: `() => void`**
+**Type: `(type?: 'facile' | 'flexible' | null) => void`**
 
-Clears the currently rendered and in-memory danmaku, triggering the `clear` hook.
+Clears all danmaku currently in rendering and memory, triggers the `clear` hook. By default, it removes all danmaku, including flexible danmaku.
+
+```ts
+// Clear all danmaku
+manager.clear();
+// Clear facile danmaku
+manager.clear('facile');
+// Clear flexible danmaku
+manager.clear('flexible');
+```
 
 ## `manager.updateOptions()`
 

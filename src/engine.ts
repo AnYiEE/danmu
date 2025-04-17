@@ -6,6 +6,7 @@ import {
   loopSlice,
   isInBounds,
   batchProcess,
+  type Nullable,
 } from 'aidly';
 import { Track } from './track';
 import { Container } from './container';
@@ -73,26 +74,33 @@ export class Engine<T> {
     }
   }
 
-  public clear() {
-    this._sets.view.clear();
-    this._sets.flexible.clear();
-    this._sets.stash.length = 0;
-    for (let i = 0; i < this.tracks.length; i++) {
-      this.tracks[i].clear();
+  public clear(type?: Nullable<DanmakuType>) {
+    if (!type || type === 'facile') {
+      for (let i = 0; i < this.tracks.length; i++) {
+        this.tracks[i].clear();
+      }
+      this._sets.view.clear();
+      this._sets.stash.length = 0;
+    }
+    if (!type || type === 'flexible') {
+      for (const dm of this._sets.flexible) {
+        dm.destroy();
+      }
+      this._sets.flexible.clear();
     }
   }
 
   // `flexible` and `view` are both xx,
   // so deleting some of them in the loop will not affect
   public each(fn: EachCallback<T>) {
-    for (const item of this._sets.flexible) {
-      if (!item.isEnded) {
-        if (fn(item) === false) return;
+    for (const dm of this._sets.flexible) {
+      if (!dm.isEnded) {
+        if (fn(dm) === false) return;
       }
     }
-    for (const item of this._sets.view) {
-      if (!item.isEnded) {
-        if (fn(item) === false) return;
+    for (const dm of this._sets.view) {
+      if (!dm.isEnded) {
+        if (fn(dm) === false) return;
       }
     }
   }
