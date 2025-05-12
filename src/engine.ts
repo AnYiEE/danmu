@@ -4,6 +4,7 @@ import {
   hasOwn,
   remove,
   loopSlice,
+  isNumber,
   isInBounds,
   batchProcess,
   type Nullable,
@@ -31,6 +32,7 @@ export class Engine<T> {
   public container = new Container();
   public tracks = [] as Array<Track<T>>;
   private _fx = new Queue();
+  private _speed: null | { expr: string | number; val: number } = null;
   private _sets = {
     view: new Set<FacileDanmaku<T>>(),
     flexible: new Set<FlexibleDanmaku<T>>(),
@@ -62,6 +64,23 @@ export class Engine<T> {
   ) {
     const val = data instanceof FacileDanmaku ? data : { data, options };
     this._sets.stash[isUnshift ? 'unshift' : 'push'](val);
+  }
+
+  public setSpeed(expr?: Nullable<number | string>) {
+    if (!expr) {
+      this._speed = null;
+    } else {
+      const val =
+        typeof expr === 'string'
+          ? this.container._toNumber('width', expr)
+          : expr;
+      assert(
+        isNumber(val) && val > 0,
+        `The speed must be greater than 0, ` +
+          `but the current value is "${val}"`,
+      );
+      this._speed = { expr, val };
+    }
   }
 
   public updateOptions(newOptions: Partial<EngineOptions>) {
@@ -200,6 +219,8 @@ export class Engine<T> {
         dm._format();
       }
     }
+    // Recalculate Speed
+    this.setSpeed(this._speed?.expr);
   }
 
   public renderFlexibleDanmaku(
@@ -375,24 +396,31 @@ export class Engine<T> {
           return;
         }
         const { mode, durationRange } = this._options;
-        if (mode !== 'none' && cur.type === 'facile') {
+        if (cur.type === 'facile') {
           assert(cur.track, 'Track not found');
-          const prev = cur.track._last(1);
-          if (prev && cur.loops === 0) {
-            const fixTime = this._collisionPrediction(
-              prev,
-              cur as FacileDanmaku<T>,
-            );
-            if (fixTime !== null) {
-              if (isInBounds(durationRange, fixTime)) {
-                cur.updateDuration(fixTime, true);
-              } else if (mode === 'strict') {
-                resolve(true);
-                return;
+          if (this._speed?.val) {
+            const w = this.container.width + cur.getWidth();
+            const fixTime = w / this._speed.val;
+            cur.updateDuration(fixTime, true);
+          } else if (mode === 'strict' || mode === 'adaptive') {
+            const prev = cur.track._last(1);
+            if (prev && cur.loops === 0) {
+              const fixTime = this._collisionPrediction(
+                prev,
+                cur as FacileDanmaku<T>,
+              );
+              if (fixTime !== null) {
+                if (isInBounds(durationRange, fixTime)) {
+                  cur.updateDuration(fixTime, true);
+                } else if (mode === 'strict') {
+                  resolve(true);
+                  return;
+                }
               }
             }
           }
         }
+
         cur._appendNode(this.container.node);
         nextFrame(() => {
           if (internalStatuses.freeze === true) {

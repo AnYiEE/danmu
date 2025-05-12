@@ -6,9 +6,9 @@ import type { FlexibleDanmaku } from './danmaku/flexible';
 
 export type DanmakuType = 'facile' | 'flexible';
 
-export type Mode = 'none' | 'strict' | 'adaptive';
-
 export type Direction = 'left' | 'right' | 'none';
+
+export type Mode = 'none' | 'strict' | 'adaptive';
 
 export type Layer<T> = StashData<T> | FacileDanmaku<T>;
 

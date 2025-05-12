@@ -410,6 +410,10 @@ export class Manager<
     }
   }
 
+  public setSpeed(expr?: Nullable<number | string>) {
+    this._engine.setSpeed(expr);
+  }
+
   public setArea(size: AreaOptions) {
     if (!isEmptyObject(size)) {
       this._engine.container._updateSize(size);

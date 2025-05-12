@@ -44,6 +44,9 @@ export const enMap = {
   setRate: 'Rate',
   setRateTip:
     'The default rate is 1, and the movement speed of the danmaku is equal to the original speed * rate',
+  setSpeed: 'Speed',
+  setSpeedTip:
+    'The danmuku will move at a constant speed, and the `timeRange` configuration will be invalid',
   setShow: 'Hide/Show',
   setStart: 'Stop/Start',
   mockDanmuContent0: 'Wow!',
