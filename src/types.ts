@@ -52,7 +52,6 @@ export type PushFlexOptions<T> = Omit<PushOptions<T>, 'direction'> & {
 };
 
 export interface PushOptions<T> {
-  id?: number | string;
   duration?: number;
   plugin?: DanmakuPlugin<T>;
   rate?: ManagerOptions['rate'];

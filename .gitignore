@@ -2,5 +2,7 @@
 .vscode
 dist
 cache
+test.js
+test.ts
 node_modules
 tsconfig.tsbuildinfo

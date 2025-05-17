@@ -1,4 +1,5 @@
 export interface DanmakuValue {
+  id: string;
   content: string;
   isSelf?: boolean;
 }

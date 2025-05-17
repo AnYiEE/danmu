@@ -7,7 +7,7 @@ import { DanmakuComponent } from '@/components/danmu/Danmaku';
 
 export const initManager = () => {
   const manager = create<DanmakuValue, Statuses>({
-    interval: 200,
+    interval: 100,
     trackHeight: 40,
     durationRange: [10000, 13000],
     plugin: {
@@ -30,13 +30,11 @@ export const initManager = () => {
 export const mock = (manager: Manager<DanmakuValue>) => {
   setInterval(() => {
     for (let i = 0; i < 10; i++) {
-      manager.push(
-        {
-          isSelf: false,
-          content: t(`mockDanmuContent${i}`),
-        },
-        { id: uuid() },
-      );
+      manager.push({
+        id: uuid(),
+        isSelf: false,
+        content: t(`mockDanmuContent${i}`),
+      });
     }
   }, 1000);
 };
