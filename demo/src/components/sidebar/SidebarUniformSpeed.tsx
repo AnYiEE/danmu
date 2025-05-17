@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-export const SidebarSpeed = memo(
+export const SidebarUniformSpeed = memo(
   ({ manager }: { manager: Manager<DanmakuValue> }) => {
     const { t } = useTranslation();
 
@@ -22,13 +22,13 @@ export const SidebarSpeed = memo(
         <Label className="shrink-0 mr-3 h-full text-base font-bold leading-8">
           <div className="flex items-center">
             <Squirrel />
-            <span className="ml-3 mr-1">{t('setSpeed')}</span>
+            <span className="ml-3 mr-1">{t('setUniformSpeed')}</span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <CircleAlert size={16} className="cursor-pointer" />
                 </TooltipTrigger>
-                <TooltipContent>{t('setSpeedTip')}</TooltipContent>
+                <TooltipContent>{t('setUniformSpeedTip')}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </div>
@@ -36,10 +36,10 @@ export const SidebarSpeed = memo(
         <Input
           className="h-4/5"
           type="number"
-          placeholder={t('setSpeed')}
+          placeholder={t('setUniformSpeed')}
           defaultValue={''}
           onChange={throttle(500, (e) => {
-            manager.setSpeed(Number(e.target.value));
+            manager.setUniformSpeed(Number(e.target.value));
           })}
         />
       </div>

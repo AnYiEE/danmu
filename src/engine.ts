@@ -32,7 +32,7 @@ export class Engine<T> {
   public container = new Container();
   public tracks = [] as Array<Track<T>>;
   private _fx = new Queue();
-  private _speed: null | { expr: string | number; val: number } = null;
+  private _uniformSpeed: null | { expr: string | number; val: number } = null;
   private _sets = {
     view: new Set<FacileDanmaku<T>>(),
     flexible: new Set<FlexibleDanmaku<T>>(),
@@ -66,9 +66,9 @@ export class Engine<T> {
     this._sets.stash[isUnshift ? 'unshift' : 'push'](val);
   }
 
-  public setSpeed(expr?: Nullable<number | string>) {
+  public setUniformSpeed(expr?: Nullable<number | string>) {
     if (!expr) {
-      this._speed = null;
+      this._uniformSpeed = null;
     } else {
       const val =
         typeof expr === 'string'
@@ -79,7 +79,7 @@ export class Engine<T> {
         `The speed must be greater than 0, ` +
           `but the current value is "${val}"`,
       );
-      this._speed = { expr, val };
+      this._uniformSpeed = { expr, val };
     }
   }
 
@@ -220,7 +220,7 @@ export class Engine<T> {
       }
     }
     // Recalculate Speed
-    this.setSpeed(this._speed?.expr);
+    this.setUniformSpeed(this._uniformSpeed?.expr);
   }
 
   public renderFlexibleDanmaku(
@@ -398,9 +398,9 @@ export class Engine<T> {
         const { mode, durationRange } = this._options;
         if (cur.type === 'facile') {
           assert(cur.track, 'Track not found');
-          if (this._speed?.val) {
+          if (this._uniformSpeed?.val) {
             const w = this.container.width + cur.getWidth();
-            const fixTime = w / this._speed.val;
+            const fixTime = w / this._uniformSpeed.val;
             cur.updateDuration(fixTime, true);
           } else if (mode === 'strict' || mode === 'adaptive') {
             const prev = cur.track._last(1);

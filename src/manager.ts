@@ -410,8 +410,8 @@ export class Manager<
     }
   }
 
-  public setSpeed(expr?: Nullable<number | string>) {
-    this._engine.setSpeed(expr);
+  public setUniformSpeed(expr?: Nullable<number | string>) {
+    this._engine.setUniformSpeed(expr);
   }
 
   public setArea(size: AreaOptions) {
