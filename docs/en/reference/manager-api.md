@@ -37,7 +37,6 @@ Send a danmaku. This danmaku will be placed in the memory array waiting to be re
 
 ```ts
 export interface PushOptions<T> {
-  id?: number | string;
   rate?: number;
   duration?: number;
   plugin?: DanmakuPlugin<T>;
@@ -68,7 +67,6 @@ const manager = create<{ content: string }>();
 manager.push(
   { content: 'content' },
   {
-    id: 1, // If your danmaku has an id, you can add it here
     rate: 1.5,
     duration: 1000,
     direction: 'left',
@@ -109,7 +107,6 @@ interface Position {
 }
 
 interface PushFlexOptions {
-  id?: number | string;
   rate?: number;
   duration?: number;
   plugin?: DanmakuPlugin<T>;
@@ -386,7 +383,13 @@ Sets the **collision detection algorithm** for subsequent rendered danmaku. This
 
 **Type: `(gap: number | string) => void`**
 
-Sets the **horizontal spacing** between subsequent rendered danmaku. This is a syntactic sugar for `manager.updateOptions()` and will trigger the `updateOptions` hook.
+Sets the **minimum horizontal spacing** between subsequent rendered danmaku. This is a syntactic sugar for `manager.updateOptions()` and will trigger the `updateOptions` hook.
+
+## `manager.setSpeed()`
+
+**Type:** `(speed: number | string | null) => void`
+
+Sets the **motion speed** of the subsequent rendered danmaku. It is syntactic sugar for `manager.updateOptions()`, which will trigger the `updateOptions` hook.
 
 ## `manager.setDurationRange()`
 

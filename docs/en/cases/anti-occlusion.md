@@ -18,7 +18,7 @@ This section will teach you how to implement the anti-occlusion feature. Since t
   // 1. Update the mask (if the second parameter is not provided,
   //    it defaults to setting on `manager.container.node`)
   // 2. The url can also be a base64 image, which might be helpful for you
-  manager.updateOccludedUrl(url, '#Id');
+  manager.updateOccludedUrl(url, '#id');
 
   // // Polling request
   setTimeout(() => update(), 1000);

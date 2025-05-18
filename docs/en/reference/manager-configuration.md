@@ -105,7 +105,17 @@ manager.setTrackHeight('33%'); // Height is 33% of the container height
 **Type: `[number, number]`**<br/>
 **Default: `[4000, 6000]`**
 
-The movement duration for regular danmaku. This is a range value, and **regular danmaku will randomly choose a time within this range as the movement duration**. If you want all danmaku to have the same movement duration, you can set both numbers to the same value. If a danmaku has its own `duration` when sent, it will use its own configuration.
+The movement duration for regular danmaku. This is a range value, and **regular danmaku will randomly choose a time within this range as the movement duration**. If you want all danmaku to have the same movement duration, you can set both numbers to the same value. If a danmaku has its own `duration` when sent (Note that it is not a uniform speed), it will use its own configuration.
+
+## `config.speed`
+
+**Type: `string | number | null | undefined`**<br/>
+**Default Value: `undefined`**
+
+> [!NOTE] Tip
+> When all danmaku move at a fixed speed, the characteristics of **uniform speed** will be evident.
+
+The speed of danmaku movement. This configuration conflicts with `durationRange`, which has a higher priority. If this configuration is set, `durationRange` will be invalid. If there is a custom `speed` when sending danmaku, the danmaku's own configuration will be used.
 
 ## `config.limits`
 

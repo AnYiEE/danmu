@@ -120,7 +120,6 @@ manager.push('弹幕内容', {
 
 ```ts
 manager.pushFlexibleDanmaku('弹幕内容', {
-  id: 1, // 可选参数
   duration: 1000, // 默认从 manager.options.durationRange 中随机取一个值
   direction: 'none', // 默认取 manager.options.direction 的值
   position: (danmaku, container) => {

@@ -17,7 +17,7 @@
 
   // 1. 更新蒙层（如果不传第二个参数，默认设置到 manager.container.node 上）
   // 2. url 也可以是 base64 图片，这可能会对你有帮助
-  manager.updateOccludedUrl(url, '#Id');
+  manager.updateOccludedUrl(url, '#id');
 
   // 轮询请求
   setTimeout(() => update(), 1000);

@@ -37,7 +37,6 @@ manager.canPush('flexible');
 
 ```ts
 export interface PushOptions<T> {
-  id?: number | string;
   rate?: number;
   duration?: number;
   plugin?: DanmakuPlugin<T>;
@@ -68,7 +67,6 @@ const manager = create<{ content: string }>();
 manager.push(
   { content: '弹幕内容' },
   {
-    id: 1, // 如果你的弹幕有 id，可以添加到这里
     rate: 1.5,
     duration: 1000,
     direction: 'left',
@@ -109,7 +107,6 @@ interface Position {
 }
 
 interface PushFlexOptions {
-  id?: number | string;
   rate?: number;
   duration?: number;
   plugin?: DanmakuPlugin<T>;
@@ -386,7 +383,13 @@ interface AreaOptions {
 
 **类型：`(gap: number | string) => void`**
 
-设置后续渲染的弹幕之间的**横向间距**，是 `manager.updateOptions()` 的语法糖，会触发 `updateOptions` 钩子。
+设置后续渲染的弹幕之间的**最小横向间距**，是 `manager.updateOptions()` 的语法糖，会触发 `updateOptions` 钩子。
+
+## `manager.setSpeed()`
+
+**类型：`(speed: number | string | null) => void`**
+
+设置后续渲染的弹幕的**运动速度**，是 `manager.updateOptions()` 的语法糖，会触发 `updateOptions` 钩子。
 
 ## `manager.setDurationRange()`
 

@@ -8,7 +8,6 @@ const formatOptions = <T>(options?: CreateOption<T>) => {
       gap: 0,
       rate: 1,
       limits: {},
-      speed: null,
       interval: 500,
       mode: 'strict',
       direction: 'right',

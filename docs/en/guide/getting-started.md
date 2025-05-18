@@ -127,7 +127,6 @@ Facile danmaku will be limited by the collision rendering algorithm. For those d
 
 ```ts
 manager.pushFlexibleDanmaku('content', {
-  id: 1, // Optional parameters
   duration: 1000, // Defaults to a random value from `manager.options.durationRange`
   direction: 'none', // Defaults to the value of `manager.options.direction`
   position: (danmaku, container) => {
