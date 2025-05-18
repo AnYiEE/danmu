@@ -82,6 +82,10 @@ export const en: LocaleSpecificConfig<DefaultTheme.Config> = {
             link: '/en/cases/track-settings',
           },
           {
+            text: 'Uniform Speed',
+            link: '/en/cases/uniform-speed',
+          },
+          {
             text: 'Cooldown',
             link: '/en/cases/cooldown',
           },

@@ -8,6 +8,7 @@ export default (process.env.NODE_ENV === 'production'
   ? withMermaid
   : defineConfig)({
   ...sharedConfig,
+  markdown: { math: true },
   locales: {
     root: { label: '简体中文', lang: 'zh', link: '/zh', ...zh },
     en: { label: 'English', lang: 'en', link: '/en', ...en },

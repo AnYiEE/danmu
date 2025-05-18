@@ -34,11 +34,13 @@ Send a danmaku. This danmaku will be placed in the memory array waiting to be re
 >
 > 1. When sending danmaku, **the data format must be `T`**. The type of `T` is controlled by you, as long as you can correctly retrieve it during rendering. See the example below for details.
 > 2. If the second parameter is not passed, or if some parameters are not passed, the default values will be taken from `manager.options`.
+> 3. The `duration` configuration may be modified by the engine to appropriate values in `strict` and `adaptive` modes.
 
 ```ts
 export interface PushOptions<T> {
   rate?: number;
   duration?: number;
+  speed?: number | string | null; // Higher priority than `duration`
   plugin?: DanmakuPlugin<T>;
   direction?: 'right' | 'left';
 }
@@ -52,7 +54,7 @@ import { create } from 'danmu';
 const manager = create<string>();
 
 // Send a danmaku.
-// Time, speed, direction, and other configurations reuse the global parameters passed during `create()`.
+// If `rate`, `speed`, `duration`, `direction`,and other configurations are not provided, the global configuration will be used as a fallback.
 manager.push('content');
 ```
 
@@ -109,8 +111,9 @@ interface Position {
 interface PushFlexOptions {
   rate?: number;
   duration?: number;
+  speed?: number | string | null; // Higher priority than `duration`
   plugin?: DanmakuPlugin<T>;
-  direction?: 'left' | 'right' | 'none'; // Facile danmaku does not have 'none'
+  direction?: 'left' | 'right' | 'none'; // Only flexible danmaku supports 'none'.
   position:
     | Position
     | ((danmaku: Danmaku<T>, container: Container) => Position);

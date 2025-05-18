@@ -7,11 +7,12 @@
 
 **示例：**
 
-```ts {16}
+```ts {17}
 interface CreateOption {
   rate?: number;
   interval?: number;
   gap?: number | string;
+  speed?: number | string | null; // 优先级比 `durationRange` 高
   durationRange?: [number, number];
   trackHeight?: number | string;
   plugin?: ManagerPlugin;
@@ -45,6 +46,10 @@ manager.setRate(1);
 **类型：`'none' | 'strict' | 'adaptive'`**<br/>
 **默认值：`'strict'`**
 
+> [!NOTE] 注意事项
+>
+> 当弹幕设置了具体的速度时（匀速模式）也会遵守以下行为。
+
 用来确定内核的**碰撞检测算法**。**如果你的业务场景是直播或者视频播放，你应该设置为 `adaptive`，这样在满足实时渲染的前提下，尽可能的不发生弹幕碰撞。**
 
 - **`none`** 不会有任何碰撞检测，弹幕会立即渲染。
@@ -57,6 +62,24 @@ manager.setRate(1);
 **默认值：`1`**
 
 用来设置设置弹幕的运动速率，弹幕的原始运动速度会乘以 `rate` 这个系数。
+
+## `config.speed`
+
+**类型：`string | number | null | undefined`**<br/>
+**默认值：`undefined`**
+
+> [!NOTE] 说明
+>
+> 1. 当所有弹幕都以固定的速度运动时则会体现出**匀速运动**的特性。
+> 2. 和 `config.rate` 的区别是，`config.speed` 是运动的速度，而 `config.rate` 是速度的倍数，例如:
+>
+> ```js
+> rate = 1.5;
+> speed = 0.1;
+> 最终运动速度为 = `0.1 * 1.5`;
+> ```
+
+弹幕运动的速度，这个配置会和 `durationRange` 冲突，优先级会更高，如果设置了此配置则 `durationRange` 会失效。如果发送弹幕的时候有自己的 `speed`，则会取弹幕自身的配置。
 
 ## `config.gap`
 
@@ -106,16 +129,6 @@ manager.setTrackHeight('33%'); // 高度为容器高度的 33%
 **默认值：`[4000, 6000]`**
 
 普通弹幕的运动时间，这是一个范围值，**普通弹幕会在这个范围内随机选择一个时间作为运动时间**，如果你希望所有的弹幕运动时间都一致（注意不是匀速），你可以将两个数设置为同样的数。如果发送弹幕的时候有自己的 `duration`，则会取弹幕自身的配置。
-
-## `config.speed`
-
-**类型：`string | number | null | undefined`**<br/>
-**默认值：`undefined`**
-
-> [!NOTE] 提示
-> 当所有弹幕都以固定的速度运动时则会体现出**匀速运动**的特性。
-
-弹幕运动的速度，这个配置会和 `durationRange` 冲突，优先级会更高，如果设置了此配置则 `durationRange` 会失效。如果发送弹幕的时候有自己的 `speed`，则会取弹幕自身的配置。
 
 ## `config.limits`
 

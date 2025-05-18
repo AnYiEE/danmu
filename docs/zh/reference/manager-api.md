@@ -34,11 +34,13 @@ manager.canPush('flexible');
 >
 > 1. 发送弹幕的时候，**数据格式必须是 `T`**，至于 `T` 的类型由你自己来控制，只要你能在渲染的时候能正确拿到就可以了，具体见下面的示例。
 > 2. 当第二个参数没有传递时，或者其中某些参数没有传递时，则会从 `manager.options` 里面取默认的值。
+> 3. `duration` 配置在 `strict` 和 `adaptive` 模式下可能会被引擎修改为合适的值。
 
 ```ts
 export interface PushOptions<T> {
   rate?: number;
   duration?: number;
+  speed?: number | string | null; // 优先级比 `duration` 更高
   plugin?: DanmakuPlugin<T>;
   direction?: 'right' | 'left';
 }
@@ -52,7 +54,7 @@ import { create } from 'danmu';
 const manager = create<string>();
 
 // 发送一条弹幕
-// 时间，速率，方向等配置复用全局的也就是 create() 时传递的参数。
+// `rate`，`speed`，`duration`，`direction` 等配置如果没有传递会兜底使用全局的配置。
 manager.push('弹幕内容');
 ```
 
@@ -109,8 +111,9 @@ interface Position {
 interface PushFlexOptions {
   rate?: number;
   duration?: number;
+  speed?: number | string | null; // 优先级比 duration 更高
   plugin?: DanmakuPlugin<T>;
-  direction?: 'left' | 'right' | 'none'; // 普通弹幕没有 'none'
+  direction?: 'left' | 'right' | 'none'; // 高级弹幕才有 'none'
   position:
     | Position
     | ((danmaku: Danmaku<T>, container: Container) => Position);

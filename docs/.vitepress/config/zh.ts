@@ -79,6 +79,10 @@ export const zh: LocaleSpecificConfig<DefaultTheme.Config> = {
             link: '/zh/cases/track-settings',
           },
           {
+            text: '匀速运动',
+            link: '/zh/cases/uniform-speed',
+          },
+          {
             text: '弹幕冷却时间',
             link: '/zh/cases/cooldown',
           },

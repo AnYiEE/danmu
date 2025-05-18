@@ -7,11 +7,12 @@ When initializing the `manager`, you can pass global options to override the def
 
 **Example:**
 
-```ts {16}
+```ts {17}
 interface CreateOption {
   rate?: number;
   interval?: number;
   gap?: number | string;
+  speed?: number | string | null; // Higher priority than `durationRange`
   durationRange?: [number, number];
   trackHeight?: number | string;
   plugin?: ManagerPlugin;
@@ -45,10 +46,14 @@ manager.setRate(1);
 **Type: `'none' | 'strict' | 'adaptive'`**<br/>
 **Default: `'strict'`**
 
+> [!NOTE] Important Note
+>
+> When danmaku is set to a specific speed (uniform motion), the following behaviors will also apply.
+
 Used to determine the kernel's **collision detection algorithm**. **If your use case is live streaming or video playback, you should set it to `adaptive`. This will minimize danmaku collisions while ensuring real-time rendering.**
 
-- **`none`** No collision detection; danmaku will render immediately.
-- **`strict`** Strict collision detection; rendering will be delayed if conditions are not met.
+- **`none`** No collision detection, danmaku will render immediately.
+- **`strict`** Strict collision detection, rendering will be delayed if conditions are not met.
 - **`adaptive`** Attempts collision detection while ensuring immediate rendering (recommended).
 
 ## `config.rate`
@@ -57,6 +62,24 @@ Used to determine the kernel's **collision detection algorithm**. **If your use 
 **Default: `1`**
 
 Used to set the movement speed of the danmaku. The original movement speed of the danmaku will be multiplied by this `rate` factor.
+
+## `config.speed`
+
+**Type: `string | number | null | undefined`**<br/>
+**Default Value: `undefined`**
+
+> [!NOTE] Explanation
+>
+> 1. When all danmaku move at a fixed speed, the characteristics of **uniform motion** will be evident.
+> 2. The difference between `config.rate` and `config.speed` is that `config.speed` is the motion speed, while `config.rate` is the multiple of the speed. For example:
+>
+> ```js
+> rate = 1.5
+> speed = 0.1
+> Final motion speed = `0.1 * 1.5`
+> ```
+
+The speed of danmaku movement. This configuration conflicts with `durationRange`, which has a higher priority. If this configuration is set, `durationRange` will be invalid. If there is a custom `speed` when sending danmaku, the danmaku's own configuration will be used.
 
 ## `config.gap`
 
@@ -106,16 +129,6 @@ manager.setTrackHeight('33%'); // Height is 33% of the container height
 **Default: `[4000, 6000]`**
 
 The movement duration for regular danmaku. This is a range value, and **regular danmaku will randomly choose a time within this range as the movement duration**. If you want all danmaku to have the same movement duration, you can set both numbers to the same value. If a danmaku has its own `duration` when sent (Note that it is not a uniform speed), it will use its own configuration.
-
-## `config.speed`
-
-**Type: `string | number | null | undefined`**<br/>
-**Default Value: `undefined`**
-
-> [!NOTE] Tip
-> When all danmaku move at a fixed speed, the characteristics of **uniform speed** will be evident.
-
-The speed of danmaku movement. This configuration conflicts with `durationRange`, which has a higher priority. If this configuration is set, `durationRange` will be invalid. If there is a custom `speed` when sending danmaku, the danmaku's own configuration will be used.
 
 ## `config.limits`
 

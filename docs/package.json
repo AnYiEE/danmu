@@ -10,6 +10,7 @@
   "dependencies": {
     "vitepress": "^1.3.3",
     "vitepress-plugin-mermaid": "^2.0.16",
-    "typescript": "^4.5.5"
+    "markdown-it-mathjax3": "^4.3.2",
+    "typescript": "^5.8.3"
   }
 }
