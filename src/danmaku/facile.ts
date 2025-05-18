@@ -4,6 +4,7 @@ import type { Container } from '../container';
 import { createDanmakuLifeCycle } from '../lifeCycle';
 import { ids, nextFrame, INTERNAL_FLAG, whenTransitionEnds } from '../utils';
 import type {
+  Speed,
   StyleKey,
   Position,
   MoveTimer,
@@ -24,6 +25,7 @@ export type PluginSystem<D extends Danmaku<any>> = ReturnType<
 export interface FacileOptions<T> {
   data: T;
   rate: number;
+  speed: Speed;
   duration: number;
   direction: Direction;
   container: Container;
@@ -53,7 +55,7 @@ export class FacileDanmaku<T> {
   protected _internalStatuses: InternalStatuses;
   protected _initData: { width: number; duration: number };
 
-  public constructor(protected _options: FacileOptions<T>) {
+  public constructor(public _options: FacileOptions<T>) {
     this.data = _options.data;
     this.rate = _options.rate;
     this.duration = _options.duration;
@@ -72,18 +74,18 @@ export class FacileDanmaku<T> {
   /**
    * @internal
    */
-  protected _summaryWidth() {
-    return this._options.container.width + this.getWidth();
-  }
-
-  /**
-   * @internal
-   */
   protected _delInTrack() {
     this._options.delInTrack(this);
     if (this.track) {
       this.track._remove(this);
     }
+  }
+
+  /**
+   * @internal
+   */
+  public _summaryWidth() {
+    return this._options.container.width + this.getWidth();
   }
 
   /**
@@ -232,6 +234,17 @@ export class FacileDanmaku<T> {
   /**
    * @internal
    */
+  public _updateDuration(duration: number, updateInitData = true) {
+    this.isFixedDuration = true;
+    this.duration = duration;
+    if (updateInitData) {
+      this._initData.duration = duration;
+    }
+  }
+
+  /**
+   * @internal
+   */
   public _format(oldWidth: number, oldHeight: number, newTrack: Track<T>) {
     if (this.isEnded) {
       this.destroy();
@@ -250,7 +263,7 @@ export class FacileDanmaku<T> {
     if (this._options.container.width !== oldWidth) {
       const { width, duration } = this._initData;
       const speed = (width + this.getWidth()) / duration;
-      this.updateDuration(this._summaryWidth() / speed, false);
+      this._updateDuration(this._summaryWidth() / speed, false);
       if (!this.paused) {
         this.pause(INTERNAL_FLAG);
         this.resume(INTERNAL_FLAG);
@@ -372,14 +385,6 @@ export class FacileDanmaku<T> {
     }
     this.pluginSystem.lifecycle.destroyed.emit(this, mark);
     this.node = null;
-  }
-
-  public updateDuration(duration: number, updateInitData = true) {
-    this.isFixedDuration = true;
-    this.duration = duration;
-    if (updateInitData) {
-      this._initData.duration = duration;
-    }
   }
 
   public setStyle<T extends StyleKey>(key: T, val: CSSStyleDeclaration[T]) {

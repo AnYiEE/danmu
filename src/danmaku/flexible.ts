@@ -11,7 +11,7 @@ export class FlexibleDanmaku<T> extends FacileDanmaku<T> {
   public position: Position;
   public type: DanmakuType = 'flexible';
 
-  public constructor(protected _options: FlexibleOptions<T>) {
+  public constructor(public _options: FlexibleOptions<T>) {
     super(_options);
     this.position = _options.position || { x: 0, y: 0 };
   }
@@ -179,7 +179,7 @@ export class FlexibleDanmaku<T> extends FacileDanmaku<T> {
     }
     const diff = this._initData.width - this._options.container.width;
     const cw = this.position.x + this.getWidth();
-    this.updateDuration((cw - diff) / this._getSpeed(), false);
+    this._updateDuration((cw - diff) / this._getSpeed(), false);
 
     if (this.paused) {
       this.resume(INTERNAL_FLAG);

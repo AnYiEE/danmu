@@ -95,13 +95,11 @@ export const Transmitter = ({
           className="ml-4"
           onClick={() => {
             if (!content) return tip();
-            manager.unshift(
-              {
-                content,
-                isSelf: true,
-              },
-              { id: uuid() },
-            );
+            manager.unshift({
+              content,
+              id: uuid(),
+              isSelf: true,
+            });
             setContent('');
           }}
         >
@@ -189,10 +187,10 @@ export const Transmitter = ({
                   manager.pushFlexibleDanmaku(
                     {
                       content,
+                      id: uuid(),
                       isSelf: true,
                     },
                     {
-                      id: uuid(),
                       duration,
                       direction,
                       position: (dm, _container) => {

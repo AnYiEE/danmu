@@ -6,6 +6,7 @@ import { ids, nextFrame, INTERNAL_FLAG } from './utils';
 import { createDanmakuPlugin, createManagerLifeCycle } from './lifeCycle';
 import type {
   Mode,
+  Speed,
   Danmaku,
   DanmakuType,
   StyleKey,
@@ -57,6 +58,9 @@ export class Manager<
       const duration = random(...this.options.durationRange);
       assert(duration > 0, `Invalid duration "${duration}"`);
       options.duration = duration;
+    }
+    if (!('speed' in options)) {
+      options.speed = this.options.speed;
     }
     return options as Required<U>;
   }
@@ -197,7 +201,10 @@ export class Manager<
     }
   }
 
-  public updateOptions(newOptions: Partial<ManagerOptions>) {
+  public updateOptions(
+    newOptions: Partial<ManagerOptions>,
+    key?: Nullable<keyof ManagerOptions>,
+  ) {
     this._engine.updateOptions(newOptions);
     this.options = Object.assign(this.options, newOptions);
 
@@ -205,7 +212,7 @@ export class Manager<
       this.stopPlaying(INTERNAL_FLAG);
       this.startPlaying(INTERNAL_FLAG);
     }
-    this.pluginSystem.lifecycle.updateOptions.emit(newOptions);
+    this.pluginSystem.lifecycle.updateOptions.emit(newOptions, key);
   }
 
   public startPlaying(_flag?: Symbol) {
@@ -394,6 +401,47 @@ export class Manager<
     this.setStyle('opacity', String(opacity));
   }
 
+  public setArea(size: AreaOptions) {
+    if (!isEmptyObject(size)) {
+      this._engine.container._updateSize(size);
+      this.format();
+    }
+  }
+
+  public setGap(gap: number | string) {
+    this.updateOptions({ gap }, 'gap');
+  }
+
+  public setMode(mode: Mode) {
+    this.updateOptions({ mode }, 'mode');
+  }
+
+  public setSpeed(speed?: Speed) {
+    this.updateOptions({ speed }, 'speed');
+  }
+
+  public setRate(rate: number) {
+    if (rate !== this.options.rate) {
+      this.updateOptions({ rate }, 'rate');
+    }
+  }
+
+  public setInterval(interval: number) {
+    this.updateOptions({ interval }, 'interval');
+  }
+
+  public setTrackHeight(trackHeight: number | string) {
+    this.updateOptions({ trackHeight }, 'trackHeight');
+  }
+
+  public setDurationRange(durationRange: [number, number]) {
+    this.updateOptions({ durationRange }, 'durationRange');
+  }
+
+  public setDirection(direction: Exclude<Direction, 'none'>) {
+    this.updateOptions({ direction }, 'direction');
+  }
+
   public setLimits({ view, stash }: { view?: number; stash?: number }) {
     let needUpdate = false;
     const limits = Object.assign({}, this.options.limits);
@@ -406,48 +454,7 @@ export class Manager<
       limits.stash = stash;
     }
     if (needUpdate) {
-      this.updateOptions({ limits });
-    }
-  }
-
-  public setUniformSpeed(expr?: Nullable<number | string>) {
-    this._engine.setUniformSpeed(expr);
-  }
-
-  public setArea(size: AreaOptions) {
-    if (!isEmptyObject(size)) {
-      this._engine.container._updateSize(size);
-      this.format();
-    }
-  }
-
-  public setDirection(direction: Exclude<Direction, 'none'>) {
-    this.updateOptions({ direction });
-  }
-
-  public setMode(mode: Mode) {
-    this.updateOptions({ mode });
-  }
-
-  public setGap(gap: number | string) {
-    this.updateOptions({ gap });
-  }
-
-  public setTrackHeight(trackHeight: number | string) {
-    this.updateOptions({ trackHeight });
-  }
-
-  public setInterval(interval: number) {
-    this.updateOptions({ interval });
-  }
-
-  public setDurationRange(durationRange: [number, number]) {
-    this.updateOptions({ durationRange });
-  }
-
-  public setRate(rate: number) {
-    if (rate !== this.options.rate) {
-      this.updateOptions({ rate });
+      this.updateOptions({ limits }, 'limits');
     }
   }
 }

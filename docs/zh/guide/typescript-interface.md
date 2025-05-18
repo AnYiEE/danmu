@@ -39,7 +39,14 @@ manager.statuses;
 ```ts
 // 以下这些类型你都可以使用
 import type {
+  Track,
+  Manager,
+  HookOn,
+  HooksOn,
+  Plugin,
+  HookType,
   Mode,
+  Speed,
   StyleKey,
   Position,
   PushOptions,

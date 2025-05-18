@@ -15,6 +15,7 @@ import { FacileDanmaku } from './danmaku/facile';
 import { FlexibleDanmaku } from './danmaku/flexible';
 import { randomIdx, nextFrame, INTERNAL_FLAG } from './utils';
 import type {
+  Speed,
   StashData,
   EachCallback,
   Danmaku,
@@ -32,7 +33,6 @@ export class Engine<T> {
   public container = new Container();
   public tracks = [] as Array<Track<T>>;
   private _fx = new Queue();
-  private _uniformSpeed: null | { expr: string | number; val: number } = null;
   private _sets = {
     view: new Set<FacileDanmaku<T>>(),
     flexible: new Set<FlexibleDanmaku<T>>(),
@@ -64,23 +64,6 @@ export class Engine<T> {
   ) {
     const val = data instanceof FacileDanmaku ? data : { data, options };
     this._sets.stash[isUnshift ? 'unshift' : 'push'](val);
-  }
-
-  public setUniformSpeed(expr?: Nullable<number | string>) {
-    if (!expr) {
-      this._uniformSpeed = null;
-    } else {
-      const val =
-        typeof expr === 'string'
-          ? this.container._toNumber('width', expr)
-          : expr;
-      assert(
-        isNumber(val) && val > 0,
-        `The speed must be greater than 0, ` +
-          `but the current value is "${val}"`,
-      );
-      this._uniformSpeed = { expr, val };
-    }
   }
 
   public updateOptions(newOptions: Partial<EngineOptions>) {
@@ -219,8 +202,6 @@ export class Engine<T> {
         dm._format();
       }
     }
-    // Recalculate Speed
-    this.setUniformSpeed(this._uniformSpeed?.expr);
   }
 
   public renderFlexibleDanmaku(
@@ -396,13 +377,13 @@ export class Engine<T> {
           return;
         }
         const { mode, durationRange } = this._options;
+
         if (cur.type === 'facile') {
-          assert(cur.track, 'Track not found');
-          if (this._uniformSpeed?.val) {
-            const w = this.container.width + cur.getWidth();
-            const fixTime = w / this._uniformSpeed.val;
-            cur.updateDuration(fixTime, true);
+          const speed = this._calculateSpeed(cur._options.speed);
+          if (speed) {
+            cur._updateDuration(cur._summaryWidth() / speed, true);
           } else if (mode === 'strict' || mode === 'adaptive') {
+            assert(cur.track, 'Track not found');
             const prev = cur.track._last(1);
             if (prev && cur.loops === 0) {
               const fixTime = this._collisionPrediction(
@@ -411,7 +392,7 @@ export class Engine<T> {
               );
               if (fixTime !== null) {
                 if (isInBounds(durationRange, fixTime)) {
-                  cur.updateDuration(fixTime, true);
+                  cur._updateDuration(fixTime, true);
                 } else if (mode === 'strict') {
                   resolve(true);
                   return;
@@ -419,6 +400,18 @@ export class Engine<T> {
               }
             }
           }
+        } else if (cur.type === 'flexible') {
+          cur.use({
+            appendNode: () => {
+              const speed = this._calculateSpeed(cur._options.speed);
+              if (speed) {
+                cur._updateDuration(
+                  (cur.position.x + cur.getWidth()) / speed,
+                  true,
+                );
+              }
+            },
+          });
         }
 
         cur._appendNode(this.container.node);
@@ -445,6 +438,7 @@ export class Engine<T> {
       data,
       internalStatuses,
       rate: options.rate,
+      speed: options.speed,
       container: this.container,
       duration: options.duration,
       direction: options.direction,
@@ -455,33 +449,44 @@ export class Engine<T> {
           : remove(this._sets.flexible, b);
       },
     };
-    // Create FacileDanmaku
-    if (type === 'facile') {
-      return new FacileDanmaku(config);
-    }
-    // Create FlexibleDanmaku
-    const dm = new FlexibleDanmaku(config);
-    const { position } = options as PushFlexOptions<T>;
 
-    // If it is a function, the position will be updated after the node is created,
-    // so that the function can get accurate danmaku data.
-    if (typeof position === 'function') {
-      dm.use({
-        appendNode: () => {
-          const { x, y } = position(dm, this.container);
-          dm._updatePosition({
-            x: this.container._toNumber('width', x),
-            y: this.container._toNumber('height', y),
-          });
-        },
-      });
+    if (type === 'facile') {
+      // Create FacileDanmaku
+      return new FacileDanmaku(config);
     } else {
-      dm._updatePosition({
-        x: this.container._toNumber('width', position.x),
-        y: this.container._toNumber('height', position.y),
-      });
+      // Create FlexibleDanmaku
+      const dm = new FlexibleDanmaku(config);
+      const { position } = options as PushFlexOptions<T>;
+
+      // If it is a function, the position will be updated after the node is created,
+      // so that the function can get accurate danmaku data.
+      if (typeof position === 'function') {
+        dm.use({
+          appendNode: () => {
+            let { x, y } = position(dm, this.container);
+            x = this.container._toNumber('width', x);
+            y = this.container._toNumber('height', y);
+            dm._updatePosition({ x, y });
+          },
+        });
+      } else {
+        const x = this.container._toNumber('width', position.x);
+        const y = this.container._toNumber('height', position.y);
+        dm._updatePosition({ x, y });
+      }
+      return dm;
     }
-    return dm;
+  }
+
+  private _calculateSpeed(s?: Speed) {
+    if (s && typeof s === 'string') {
+      s = this.container._toNumber('width', s);
+      assert(
+        isNumber(s) && s > 0,
+        `The speed must > 0, but the current value is "${s}"`,
+      );
+    }
+    return s as Nullable<number>;
   }
 
   private _getTrack(

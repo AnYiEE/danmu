@@ -1,3 +1,4 @@
+import type { Nullable } from 'aidly';
 import type { HooksOn, RefinePlugin } from 'hooks-plugin';
 import type { Manager } from './manager';
 import type { Container } from './container';
@@ -9,6 +10,8 @@ export type DanmakuType = 'facile' | 'flexible';
 export type Direction = 'left' | 'right' | 'none';
 
 export type Mode = 'none' | 'strict' | 'adaptive';
+
+export type Speed = Nullable<string | number>;
 
 export type Layer<T> = StashData<T> | FacileDanmaku<T>;
 
@@ -52,6 +55,7 @@ export type PushFlexOptions<T> = Omit<PushOptions<T>, 'direction'> & {
 };
 
 export interface PushOptions<T> {
+  speed?: Speed;
   duration?: number;
   plugin?: DanmakuPlugin<T>;
   rate?: ManagerOptions['rate'];
@@ -62,6 +66,7 @@ export interface EngineOptions {
   mode: Mode;
   rate: number;
   gap: number | string;
+  speed?: Speed;
   trackHeight: number | string;
   durationRange: [number, number];
   direction: Exclude<Direction, 'none'>;

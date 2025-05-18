@@ -8,6 +8,7 @@ const formatOptions = <T>(options?: CreateOption<T>) => {
       gap: 0,
       rate: 1,
       limits: {},
+      speed: null,
       interval: 500,
       mode: 'strict',
       direction: 'right',
@@ -44,6 +45,7 @@ export type { Manager } from './manager';
 export type { HookOn, HooksOn, Plugin, HookType } from 'hooks-plugin';
 export type {
   Mode,
+  Speed,
   StyleKey,
   Position,
   PushOptions,

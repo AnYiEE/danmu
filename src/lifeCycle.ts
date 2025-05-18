@@ -59,9 +59,11 @@ export function createManagerLifeCycle<T>() {
     unmount: new SyncHook<[HTMLElement | null]>(),
     init: new SyncHook<[manager: Manager<T>]>(),
     limitWarning: new SyncHook<[DanmakuType, number]>(),
-    updateOptions: new SyncHook<[Partial<ManagerOptions>]>(),
     push: new SyncHook<[T | Danmaku<T>, DanmakuType, boolean]>(),
     render: new SyncHook<[DanmakuType]>(),
+    updateOptions: new SyncHook<
+      [Partial<ManagerOptions>, Nullable<keyof ManagerOptions>]
+    >(),
     willRender: new SyncWaterfallHook<{
       type: DanmakuType;
       prevent: boolean;

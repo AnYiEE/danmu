@@ -113,12 +113,6 @@ danmaku.setStyle('background', 'red');
 
 `getHeight()` will return the height of the danmaku instance itself, which can be very useful when calculating the `position` for advanced danmaku.
 
-## `danmaku.updateDuration()`
-
-**Type: `(duration: number) => void`**
-
-`updateDuration()` is used to update the movement duration of the danmaku instance. Generally, this method is intended for use by the internal rendering engine.
-
 ## `danmaku.remove()`
 
 **Type: `(pluginName: string) => void`**

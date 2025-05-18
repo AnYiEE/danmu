@@ -113,12 +113,6 @@ danmaku.setStyle('background', 'red');
 
 `getHeight()` 将返回弹幕实例自身的高度，这在你发送高级弹幕的时候计算 `position` 的时候会很有用。
 
-## `danmaku.updateDuration()`
-
-**类型：`(duration: number) => void`**
-
-`updateDuration()` 用于更新弹幕实例的运动时间，一般情况下这个方法供内部的渲染引擎使用。
-
 ## `danmaku.remove()`
 
 **类型：`(pluginName: string) => void`**

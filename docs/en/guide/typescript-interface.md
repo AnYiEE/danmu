@@ -39,7 +39,14 @@ Below are the types we export by default, which can assist you in writing busine
 ```ts
 // You can use all of these types
 import type {
+  Track,
+  Manager,
+  HookOn,
+  HooksOn,
+  Plugin,
+  HookType,
   Mode,
+  Speed,
   StyleKey,
   Position,
   PushOptions,

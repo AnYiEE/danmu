@@ -9,6 +9,7 @@ export const initManager = () => {
   const manager = create<DanmakuValue, Statuses>({
     interval: 100,
     trackHeight: 40,
+    speed: 0.1,
     durationRange: [10000, 13000],
     plugin: {
       init(manager) {
