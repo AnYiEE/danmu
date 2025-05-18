@@ -51,6 +51,9 @@ export class Manager<
     if (!('rate' in options)) {
       options.rate = this.options.rate;
     }
+    if (!('speed' in options)) {
+      options.speed = this.options.speed;
+    }
     if (!('direction' in options)) {
       options.direction = this.options.direction;
     }
@@ -59,9 +62,7 @@ export class Manager<
       assert(duration > 0, `Invalid duration "${duration}"`);
       options.duration = duration;
     }
-    if (!('speed' in options)) {
-      options.speed = this.options.speed;
-    }
+
     return options as Required<U>;
   }
 
