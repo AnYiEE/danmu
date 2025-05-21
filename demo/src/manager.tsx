@@ -15,7 +15,15 @@ export const initManager = () => {
         'shadow shadow-slate-200 bg-slate-100'.split(' ').forEach((c) => {
           manager.container.node.classList.add(c);
         });
+
+        document.addEventListener('visibilitychange', () => {
+          const options = { preventEvents: ['pause', 'resume'] };
+          document.visibilityState === 'hidden'
+            ? manager.freeze(options)
+            : manager.unfreeze(options);
+        });
       },
+
       $createNode(dm) {
         if (!dm.node) return;
         ReactDOM.createRoot(dm.node).render(
