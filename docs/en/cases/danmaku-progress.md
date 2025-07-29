@@ -17,11 +17,11 @@ scrubbing in a video.
 
 ```ts
 manager.push('This danmaku starts from 30%', {
-    progress: 0.3
+  progress: 0.3,
 });
 
 manager.push('This danmaku starts from 80%', {
-    progress: 0.8
+  progress: 0.8,
 });
 ```
 
@@ -35,23 +35,23 @@ danmaku.
 const DANMAKU_DURATION = 5; // seconds
 
 function onSeek() {
-    // clear all existing danmaku
-    manager.clear()
+  // clear all existing danmaku
+  manager.clear();
 
-    // get a list of danmaku starting at 5 seconds before the current time
-    const danmakus = getDanmakuStartingAt(video.currentTime - DANMAKU_DURATION)
+  // get a list of danmaku starting at 5 seconds before the current time
+  const danmakus = getDanmakuStartingAt(video.currentTime - DANMAKU_DURATION);
 
-    danmakus.forEach(({time, text}) => {
-        // compute the progress for each danmaku
-        const progress = (video.currentTime - comment.time) / DANMAKU_DURATION
+  danmakus.forEach(({ time, text }) => {
+    // compute the progress for each danmaku
+    const progress = (video.currentTime - comment.time) / DANMAKU_DURATION;
 
-        // The ones that are before video.currentTime will have progress > 0, 
-        // so they will appear immediately in the middle of the screen instead of the edges
-        manager.push(text, {
-            progress
-        });
-    })
+    // The ones that are before video.currentTime will have progress > 0,
+    // so they will appear immediately in the middle of the screen instead of the edges
+    manager.push(text, {
+      progress,
+    });
+  });
 }
 
-video.addEventListener('seeking', onSeek)
+video.addEventListener('seeking', onSeek);
 ```

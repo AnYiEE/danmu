@@ -15,11 +15,11 @@
 
 ```ts
 manager.push('这条弹幕从 30% 的位置开始', {
-    progress: 0.3
+  progress: 0.3,
 });
 
 manager.push('这条弹幕从 80% 的位置开始', {
-    progress: 0.8
+  progress: 0.8,
 });
 ```
 
@@ -31,23 +31,23 @@ manager.push('这条弹幕从 80% 的位置开始', {
 const DANMAKU_DURATION = 5; // 秒
 
 function onSeek() {
-    // 清空屏幕
-    manager.clear()
+  // 清空屏幕
+  manager.clear();
 
-    // 获取从当前时间前5秒开始的弹幕列表
-    const comments = getCommentsStartingAt(video.currentTime - DANMAKU_DURATION)
+  // 获取从当前时间前5秒开始的弹幕列表
+  const comments = getCommentsStartingAt(video.currentTime - DANMAKU_DURATION);
 
-    comments.forEach(({time, text}) => {
-        // 计算每条弹幕的进度
-        const progress = (video.currentTime - comment.time) / DANMAKU_DURATION
+  comments.forEach(({ time, text }) => {
+    // 计算每条弹幕的进度
+    const progress = (video.currentTime - comment.time) / DANMAKU_DURATION;
 
-        // 在 video.currentTime 之前的弹幕进度 > 0，
-        // 所以会立即出现在屏幕中间某处而不是从边缘开始
-        manager.push(text, {
-            progress
-        });
-    })
+    // 在 video.currentTime 之前的弹幕进度 > 0，
+    // 所以会立即出现在屏幕中间某处而不是从边缘开始
+    manager.push(text, {
+      progress,
+    });
+  });
 }
 
-video.addEventListener('seeking', onSeek)
-``` 
+video.addEventListener('seeking', onSeek);
+```
