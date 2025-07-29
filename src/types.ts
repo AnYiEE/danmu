@@ -57,17 +57,17 @@ export type PushFlexOptions<T> = Omit<PushOptions<T>, 'direction'> & {
 export interface PushOptions<T> {
   speed?: Speed;
   duration?: number;
+  progress?: number;
   plugin?: DanmakuPlugin<T>;
   rate?: ManagerOptions['rate'];
   direction?: ManagerOptions['direction'];
-  progress?: number;
 }
 
 export interface EngineOptions {
+  speed?: Speed;
   mode: Mode;
   rate: number;
   gap: number | string;
-  speed?: Speed;
   trackHeight: number | string;
   durationRange: [number, number];
   direction: Exclude<Direction, 'none'>;
