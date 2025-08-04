@@ -23,6 +23,7 @@ export type PluginSystem<D extends Danmaku<any>> = ReturnType<
 >;
 
 export interface FacileOptions<T> {
+  progress?: number;
   data: T;
   rate: number;
   speed: Speed;
@@ -31,7 +32,6 @@ export interface FacileOptions<T> {
   container: Container;
   internalStatuses: InternalStatuses;
   delInTrack: (b: Danmaku<T>) => void;
-  progress?: number;
 }
 
 export class FacileDanmaku<T> {
@@ -53,6 +53,7 @@ export class FacileDanmaku<T> {
   public position: Position = { x: 0, y: 0 };
   public pluginSystem: PluginSystem<Danmaku<T>> =
     createDanmakuLifeCycle<Danmaku<T>>();
+
   protected _internalStatuses: InternalStatuses;
   protected _initData: { width: number; duration: number };
 
