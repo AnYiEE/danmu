@@ -136,8 +136,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       aidly:
-        specifier: ^1.9.0
-        version: 1.9.0
+        specifier: ^1.36.0
+        version: 1.36.0
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1777,9 +1777,6 @@ packages:
 
   aidly@1.36.0:
     resolution: {integrity: sha512-kLcRM0x4lWb9lFgh8L5sehy4SG0cO/0HTVzRlV0kFK2xJKNk/pK/UJFlcAbSr03xIyy1AlO0BwuhLuEJY4n0RA==}
-
-  aidly@1.9.0:
-    resolution: {integrity: sha512-OREY4n7SkhJZpxn94Exd4MeYni1MVPpHGe8dBxkuOSjqrlOTHchgjguaX8BNd0g3idoRNrkFBrmyJ+JWK+AROw==}
 
   algoliasearch@4.24.0:
     resolution: {integrity: sha512-bf0QV/9jVejssFBmz2HQLxUadxk574t4iwjCKp5E7NBzwKkrDEhKPISIIjAU/p6K5qDx3qoeh4+26zWN1jmw3g==}
@@ -5726,10 +5723,6 @@ snapshots:
   '@xmldom/xmldom@0.9.8': {}
 
   aidly@1.36.0:
-    dependencies:
-      small-queue: 1.1.2
-
-  aidly@1.9.0:
     dependencies:
       small-queue: 1.1.2
 
