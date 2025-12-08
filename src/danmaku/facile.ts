@@ -217,7 +217,6 @@ export class FacileDanmaku<T> {
    */
   protected _monitorEdge() {
     if (!this.node || !this.moving) return;
-
     // Check if there are any real user listeners interested in edge detection:
     // 1. Danmaku instance listeners: Could be from push({ plugin: { reachEdge() {} } })
     // 2. Manager listeners: Could be from create({ plugin: { $reachEdge() {} } })
@@ -227,13 +226,14 @@ export class FacileDanmaku<T> {
         this._options.managerPluginSystem,
         '$reachEdge',
       )
-    )
+    ) {
       return;
+    }
 
     const check = () => {
-      if (this._hasReachedEdge || !this.moving || this.paused || !this.node)
+      if (this._hasReachedEdge || !this.moving || this.paused || !this.node) {
         return;
-
+      }
       const containerRect =
         this._options.container.node?.getBoundingClientRect();
 
@@ -266,11 +266,9 @@ export class FacileDanmaku<T> {
         this.pluginSystem.lifecycle.reachEdge.emit(this);
         return;
       }
-
       requestAnimationFrame(check);
     };
 
-    // Execute check immediately to avoid missing edge detection due to `requestAnimationFrame` delay
     check();
   }
 

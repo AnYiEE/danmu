@@ -108,19 +108,9 @@ export function createDanmakuPlugin<T>(
   return plugin;
 }
 
-/**
- * Check if a hook has real user listeners (excluding bridge functions)
- *
- * Bridge functions are automatically created by createDanmakuPlugin to forward
- * danmaku instance events to manager-level hooks. They are named '__danmaku_bridge_fn'.
- * This function filters them out to detect if there are actual user-registered listeners.
- *
- * @param hook - The hook to check (SyncHook or AsyncHook)
- * @returns true if there are real user listeners (non-bridge functions), false otherwise
- */
-function hasRealListeners<T extends unknown[]>(
+const hasRealListeners = <T extends Array<unknown>>(
   hook: SyncHook<T> | AsyncHook<T>,
-) {
+) => {
   if (hook.isEmpty()) return false;
 
   for (const listener of hook.listeners) {
@@ -130,40 +120,10 @@ function hasRealListeners<T extends unknown[]>(
   }
 
   return false;
-}
+};
 
-/**
- * Check if there are any real user listeners interested in a specific lifecycle hook
- *
- * This function checks both:
- * 1. Danmaku instance listeners - registered via push({ plugin: { reachEdge() {} } })
- * 2. Manager listeners - registered via create({ plugin: { $reachEdge() {} } })
- *
- * It's useful for performance optimization to avoid unnecessary operations when
- * no one is listening to a specific event.
- *
- * @param danmakuHook - The hook on danmaku instance
- * @param managerPluginSystem - The manager's plugin system
- * @param managerHookName - The name of the hook on manager
- * @returns true if there are real user listeners on either danmaku or manager, false otherwise
- *
- * @example
- * ```ts
- * // In danmaku instance
- * const hasListeners = hasAnyRealListeners(
- *   this.pluginSystem.lifecycle.reachEdge,
- *   this._options.managerPluginSystem,
- *   '$reachEdge'
- * );
- *
- * if (!hasListeners) {
- *   // Skip expensive operations like requestAnimationFrame monitoring
- *   return;
- * }
- * ```
- */
 export function hasAnyRealListeners<
-  T extends unknown[],
+  T extends Array<unknown>,
   U extends ReturnType<typeof createManagerLifeCycle<any>>,
 >(
   danmakuHook: SyncHook<T> | AsyncHook<T>,
